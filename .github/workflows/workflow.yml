@@ -10,7 +10,7 @@ name: moresso
 
 on:
   release:
-    types: [published]
+    types: [created]
 
 permissions:
   contents: read
@@ -51,7 +51,11 @@ jobs:
     environment:
       name: pypi
       # OPTIONAL: uncomment and update to include your PyPI project URL in the deployment status:
-      url: https://pypi.org/p/moresso
+      # url: https://pypi.org/p/moresso
+      #
+      # ALTERNATIVE: if your GitHub Release name is the PyPI project version string
+      # ALTERNATIVE: exactly, uncomment the following line instead:
+      url: https://pypi.org/p/moresso/${{ github.event.release.name }}
       #
       # ALTERNATIVE: if your GitHub Release name is the PyPI project version string
       # ALTERNATIVE: exactly, uncomment the following line instead:
@@ -68,3 +72,4 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: dist/
+
