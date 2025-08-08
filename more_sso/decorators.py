@@ -6,7 +6,7 @@ from more_sso.exceptions import JWTValidationError
 from typing import TypeVar
 def auth_required(func):
     @wraps(func)
-    def wrapper(headers: dict | TypeVar['event',dict], *args, **kwargs):
+    def wrapper(headers: dict , *args, **kwargs):
 
         auth_header = headers.get("Authorization", "")
         if not auth_header.startswith("Bearer "):
