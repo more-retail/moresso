@@ -56,6 +56,10 @@ jobs:
       # ALTERNATIVE: if your GitHub Release name is the PyPI project version string
       # ALTERNATIVE: exactly, uncomment the following line instead:
       url: https://pypi.org/p/moresso/${{ github.event.release.name }}
+      #
+      # ALTERNATIVE: if your GitHub Release name is the PyPI project version string
+      # ALTERNATIVE: exactly, uncomment the following line instead:
+      # url: https://pypi.org/project/YOURPROJECT/${{ github.event.release.name }}
 
     steps:
       - name: Retrieve release distributions
@@ -68,3 +72,4 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: dist/
+
