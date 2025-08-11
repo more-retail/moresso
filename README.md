@@ -32,7 +32,7 @@ def my_func(header, *args,**kwargs):
 
 or 
 try:
-    user = check_authorization(token)
+    user = validate_token(token)
 except JWTValidationError as e:
     ...
 ```
