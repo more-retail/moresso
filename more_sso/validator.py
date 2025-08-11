@@ -16,7 +16,7 @@ def get_public_key() -> str:
     cfg = get_sso_config()
     secret = get_secret(cfg['public_key_uri'],cfg['region'])
 
-    public_key = secret['PUBLIC_KEY'].replace("\n\n","\n").strip()
+    public_key = secret['PUBLIC_KEY'].replace("\\n","\n").replace("\n\n","\n").strip()
     _public_key_cache.set('PUBLIC_KEY', public_key)
     return public_key
  
