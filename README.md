@@ -46,7 +46,7 @@ def lambda_handler(event, context):
     """inject_jwt_user with inject the decoded payload into user  of requestContext 
     if authentication fails then  inject_jwt_user returns with statusCode 401 """
     user = event['requestContext']['user']
-
-# Where to get it
 ```
+# Where to get it
+
 The source code is currently hosted on GitHub at: [here](https://github.com/more-retail/moresso)
