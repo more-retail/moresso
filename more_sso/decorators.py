@@ -43,12 +43,12 @@ def root_auth_required(func):
     def wrapper(event, context):
         auth_header = event.get("headers", {}).get("Authorization", "")
         if not auth_header.startswith("Bearer "):
-            return json_response( 401, detail= str(e) )
+            return json_response( 401, detail="invalid Authorization header header should begin with Bearer ..." )
         token = auth_header.split(" ")[1]
         try:
             user = validate_jwt(token)
             event['requestContext']['user'] = user
             return func(event, context)
         except JWTValidationError as e:
-            return json_response( 401, detail= str(e) )
+            return json_response( 401, detail=str(e))
     return wrapper
