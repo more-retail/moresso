@@ -16,11 +16,10 @@ from sso_auth.exceptions import JWTValidationError
 from sso_auth.validators import validate_token
 
 init_sso_config(
-    sso_public_key_url=SSO_PUBLIC_KEY_URL,
-    sso_issuer=SSO_ISSUER
-)
+    public_key_uri=SSO_PUBLIC_KEY_URL
+    )
 or 
-: export then env with SSO_PUBLIC_KEY_URL and SSO_ISSUER
+: export then env with PUBLIC_KEY_URI 
 
 #the decoded payload will be injected into  event['headers']['user']
 @auth_required
