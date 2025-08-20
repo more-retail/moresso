@@ -18,3 +18,6 @@ class Cache:
             'data': data,
             'expiry': time.time() + self.ttl
         }
+
+    def clear(self):
+        self.store={}
