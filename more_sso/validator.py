@@ -22,6 +22,8 @@ def get_public_key() -> str:
 def validate_jwt(token: str) -> dict:
     public_key = get_public_key()
     try:
+        if token.startswith("Bearer "):
+            token = token.split("Bearer ")[1].strip()
         payload = jwt.decode(
             token,
             key=public_key,

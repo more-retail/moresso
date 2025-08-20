@@ -16,7 +16,6 @@ def get_pem(KeyId) -> str:
     lines = [body[i:i+64] for i in range(0, len(body), 64)]
     return "-----BEGIN PUBLIC KEY-----\n" + "\n".join(lines) + "\n-----END PUBLIC KEY-----\n"
 
-
 _config = None
 
 def _validate_config(config: dict):
