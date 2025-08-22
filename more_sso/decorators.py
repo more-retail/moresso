@@ -42,8 +42,8 @@ def root_auth_required(func):
     @wraps(func)
     def wrapper(event, context):
         token = event.get("headers", {}).get("Authorization", "") or  event.get("headers", {}).get("authorization", "")
-        if token :
-            return json_response( 401, detail="invalid Authorization header header should begin with Bearer ..." )
+        if not token :
+            return json_response( 401, detail= "Unauthorized: Missing or invalid Authorization header")
         try:
             user = validate_jwt(token)
             event['requestContext']['user'] = user
