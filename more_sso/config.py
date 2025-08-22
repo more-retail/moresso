@@ -1,19 +1,20 @@
 import json
 import os
 import boto3
-
+import base64
 class ConfigMissingError(Exception):
     """Raised when required SSO config is missing."""
     pass
 
-REQUIRED_SSO_KEYS = ["public_key_uri","region"]
+REQUIRED_SSO_KEYS = ["public_key_uri"]
 
-def get_secret(secret,region):
-    session = boto3.session.Session()
-    client = session.client(service_name='secretsmanager',region_name=region )
-    get_secret_value_response = client.get_secret_value( SecretId=secret )
-    secret = json.loads(get_secret_value_response['SecretString'])
-    return secret  
+def get_pem(KeyId) -> str:
+    kms = boto3.client("kms",'ap-south-1')
+    resp = kms.get_public_key(KeyId=KeyId)
+    b:bytes = resp["PublicKey"]
+    body = base64.encodebytes(b).decode("ascii").replace("\n", "")
+    lines = [body[i:i+64] for i in range(0, len(body), 64)]
+    return "-----BEGIN PUBLIC KEY-----\n" + "\n".join(lines) + "\n-----END PUBLIC KEY-----\n"
 
 _config = None
 
@@ -22,15 +23,14 @@ def _validate_config(config: dict):
     if missing:
         raise ConfigMissingError(f"Missing SSO config: {', '.join(missing)} \n please set them in environment or pass them as parameters to init_sso_config( ) ")
 
-def init_sso_config(public_key_uri=None,region=None):
+def init_sso_config(public_key_uri=None):
     """
     Initialize config from parameters or environment variables.
     Supports any keys. Required keys are checked dynamically.
     """
     global _config
     _config = {
-        "public_key_uri": public_key_uri,
-        "region":region
+        "public_key_uri": public_key_uri
     }
     _validate_config(_config)
 

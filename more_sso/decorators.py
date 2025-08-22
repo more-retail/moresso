@@ -6,7 +6,7 @@ from more_sso.exceptions import JWTValidationError
 from typing import TypeVar
 import json
 
-headers = {
+RESPONSE_HEADERS = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers":"*.more.in",
@@ -16,20 +16,20 @@ headers = {
 def json_response(status_code: int, detail: str="success", data: dict = {}):
     return {
         "statusCode": status_code,
-        "headers":headers,
+        "headers":RESPONSE_HEADERS,
         "body": json.dumps({
             "detail": detail,
             "data": data or {}
         })
     }
 
+
 def auth_required(func):
     @wraps(func)
     def wrapper(headers: dict , *args, **kwargs):
-        auth_header = headers.get("Authorization", "")
-        if not auth_header.startswith("Bearer "):
+        token = headers.get("Authorization", "") or headers.get("authorization", "")
+        if not token:
             return json_response( 401, detail= "Unauthorized: Missing or invalid Authorization header")
-        token = auth_header.split(" ")[1]
         try:
             user = validate_jwt(token)
             headers = {"user": user}  # Inject user into headers for further use
@@ -41,10 +41,9 @@ def auth_required(func):
 def root_auth_required(func):
     @wraps(func)
     def wrapper(event, context):
-        auth_header = event.get("headers", {}).get("Authorization", "")
-        if not auth_header.startswith("Bearer "):
-            return json_response( 401, detail="invalid Authorization header header should begin with Bearer ..." )
-        token = auth_header.split(" ")[1]
+        token = event.get("headers", {}).get("Authorization", "") or  event.get("headers", {}).get("authorization", "")
+        if not token :
+            return json_response( 401, detail= "Unauthorized: Missing or invalid Authorization header")
         try:
             user = validate_jwt(token)
             event['requestContext']['user'] = user
