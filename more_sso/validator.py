@@ -4,7 +4,7 @@ import jwt
 from more_sso.cache import Cache
 from more_sso.config import get_sso_config,get_pem
 from more_sso.exceptions import JWTValidationError
-
+from functools import partial
 _public_key_cache = Cache(ttl_seconds=60*60)
 
 def get_public_key() -> str:
@@ -16,15 +16,18 @@ def get_public_key() -> str:
     public_key = get_pem(cfg['public_key_uri'])
 
     _public_key_cache.set('PUBLIC_KEY', public_key)
-    return public_key
+    return public_key,cfg.get('app_name')
  
 
 def validate_jwt(token: str) -> dict:
-    public_key = get_public_key()
+    public_key,audience = get_public_key()
+    decode_fn = jwt.decode
+    if audience:
+         decode_fn = partial(jwt.decode,audience=audience)
     try:
         if token.startswith("Bearer "):
             token = token.split("Bearer ")[1].strip()
-        payload = jwt.decode(
+        payload = decode_fn(
             token,
             key=public_key,
             algorithms=["RS256"]
