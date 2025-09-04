@@ -31,9 +31,8 @@ init_sso_config(
 ```
 Method 2: Environment variables
 ```bash
-export SSO_PUBLIC_KEY_URL="https://auth.more.in/public_key"
-export SSO_AUDIENCE="my-service"
-export SSO_ISSUER="https://id.more.in/"
+export PUBLIC_KEY_URL="https://auth.more.in/public_key"
+export AUDIENCE="my-service"
 ```
 
 Usage
