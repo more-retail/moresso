@@ -16,7 +16,7 @@ def get_public_key() -> str:
     public_key = get_pem(cfg['public_key_uri'])
 
     _public_key_cache.set('PUBLIC_KEY', public_key)
-    return public_key,cfg.get('app_name')
+    return public_key,cfg.get('audience')
  
 
 def validate_jwt(token: str) -> dict:

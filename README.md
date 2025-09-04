@@ -26,9 +26,8 @@ from more_sso import init_sso_config
 ```python
 init_sso_config(
     public_key_uri="https://auth.more.in/public_key",
-    audience="my-service",
-    issuer="https://id.more.in/"
-)
+    audience="my-service"
+    )
 ```
 Method 2: Environment variables
 ```bash
@@ -44,7 +43,7 @@ The decoded JWT payload is automatically injected into the headers["user"].
 from more_sso import auth_required
 @auth_required(permission="scopes.store_ids", value=1108)
 def my_func(event, *args, **kwargs):
-    user = headers.get("requestContext", {}).get("user")
+    user = event.get("requestContext", {}).get("user")
     print("User:", user)
     return {"ok": True}
 
@@ -81,8 +80,8 @@ def handler(event, *args, **kwargs):
 ```
 This will check if the JWT contains:
 ```json
-"scopes": {
-  "store_ids":  [1101, 1108]
+"permissions": {
+  "store_id":  [1101, 1108]
 }
 ```
 Custom Permission Classes
