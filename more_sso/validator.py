@@ -10,14 +10,13 @@ _public_key_cache = Cache(ttl_seconds=60*60)
 def get_public_key() -> str:
     cached_key = _public_key_cache.get('PUBLIC_KEY')
     if cached_key:
-        return cached_key
+        return cached_key,_public_key_cache.get('AUDIENCE') 
 
     cfg = get_sso_config()
     public_key = get_pem(cfg['public_key_uri'])
-
     _public_key_cache.set('PUBLIC_KEY', public_key)
+    _public_key_cache.set('AUDIENCE', cfg.get('audience'))  
     return public_key,cfg.get('audience')
- 
 
 def validate_jwt(token: str) -> dict:
     public_key,audience = get_public_key()
