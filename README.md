@@ -31,7 +31,7 @@ init_sso_config(
 ```
 Method 2: Environment variables
 ```bash
-export PUBLIC_KEY_URL="https://auth.more.in/public_key"
+export PUBLIC_KEY_URI="https://auth.more.in/public_key"
 export AUDIENCE="my-service"
 ```
 
@@ -50,8 +50,8 @@ def my_func(event, *args, **kwargs):
 2. Token Validation in Code
 You can also validate JWT tokens directly.
 ```python
-from more_sso.validators import validate_token
-from more_sso.exceptions import JWTValidationError
+from more_sso import validate_token
+from more_sso import JWTValidationError
 try:
     user = validate_token(token)
     print(user)
@@ -86,7 +86,7 @@ This will check if the JWT contains:
 Custom Permission Classes
 You can define your own Permission checker by extending BasePermission:
 ```python
-from more_sso.permissions import BasePermission
+from more_sso import BasePermission
 class CustomPermission(BasePermission):
     def has_access(self) -> bool:
         # Example: allow only admins
@@ -101,7 +101,7 @@ def admin_only(event, *args, **kwargs):
 ```
 Exception Handling
 ```python
-from more_sso.exceptions import JWTValidationError
+from more_sso import JWTValidationError
 try:
     user = validate_token(token)
 except JWTValidationError:
