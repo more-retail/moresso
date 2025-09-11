@@ -1,7 +1,7 @@
 [project]
 name = "moresso"
 version = "0.4.0"
-description = "Reusable JWT RS256 validator with header-based decorator for AWS Lambda and Python apps"
+description = "A lightweight and extensible Single Sign-On (SSO) authentication library for Python.  "
 readme = "README.md"
 authors = [
     { name="chalapathy v", email="chalapathyv57@gmail.com" }
