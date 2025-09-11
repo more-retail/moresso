@@ -1,6 +1,6 @@
 [project]
 name = "moresso"
-version = "0.3.5"
+version = "0.4.0"
 description = "Reusable JWT RS256 validator with header-based decorator for AWS Lambda and Python apps"
 readme = "README.md"
 authors = [
