@@ -28,6 +28,7 @@ def validate_jwt(token: str) -> dict:
             token = token.split("Bearer ")[1].strip()
         payload = decode_fn(
             token,
+            token_type='access',
             key=public_key,
             algorithms=["RS256"]
         )
