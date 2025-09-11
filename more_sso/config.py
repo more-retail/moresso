@@ -7,6 +7,7 @@ class ConfigMissingError(Exception):
     pass
 
 REQUIRED_SSO_KEYS = ["public_key_uri"]
+ADDITIONAL_KEYS = ["audience"]
 
 def get_pem(KeyId) -> str:
     kms = boto3.client("kms",'ap-south-1')
@@ -23,16 +24,18 @@ def _validate_config(config: dict):
     if missing:
         raise ConfigMissingError(f"Missing SSO config: {', '.join(missing)} \n please set them in environment or pass them as parameters to init_sso_config( ) ")
 
-def init_sso_config(public_key_uri=None):
+def init_sso_config(public_key_uri=None,audience=None):
     """
     Initialize config from parameters or environment variables.
     Supports any keys. Required keys are checked dynamically.
     """
     global _config
     _config = {
-        "public_key_uri": public_key_uri
+        "public_key_uri": public_key_uri,
+        "audience": audience
     }
     _validate_config(_config)
+
 
 def get_sso_config():
     global _config
@@ -44,5 +47,9 @@ def get_sso_config():
         key: os.getenv(f"{key.upper()}", "")
         for key in REQUIRED_SSO_KEYS
     }
+
+    for key in ADDITIONAL_KEYS:
+        config[key] = os.getenv(f"{key.upper()}", "")
+
     _validate_config(config)
     return config
