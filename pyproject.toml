@@ -1,7 +1,7 @@
 [project]
 name = "moresso"
-version = "0.4.0"
-description = "A lightweight and extensible Single Sign-On (SSO) authentication library for Python.  "
+version = "0.5.0"
+description = "A lightweight and extensible Single Sign-On (SSO) authentication library for Python."
 readme = "README.md"
 authors = [
     { name="chalapathy v", email="chalapathyv57@gmail.com" }
