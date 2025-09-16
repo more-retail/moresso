@@ -40,7 +40,7 @@ Usage
 The decoded JWT payload is automatically injected into the headers["user"].
 ```python
 from more_sso import auth_required
-@auth_required(permission="scopes.store_ids", value=1108)
+@auth_required(permission="pma.role", value='admin')
 def my_func(event, *args, **kwargs):
     user = event.get("requestContext", {}).get("user")
     print("User:", user)
@@ -69,10 +69,10 @@ def lambda_handler(event, context):
     return {"statusCode": 200, "body": f"Hello {user['sub']}"}
 ```
 Permissions
-The default JSONPermissionChecker lets you enforce JSON-based policies (nested claims, lists, or flags).
+The default Permission lets you enforce JSON-based policies (nested claims, lists, or flags).
 Example:
 ```python
-@auth_required(permission="scopes.store_ids", value=1101)
+@auth_required(permission="my_app.role", value='admin')
 def handler(event, *args, **kwargs):
     user = event['requestContext'].get("user", {})
     ...

@@ -5,7 +5,7 @@ from more_sso.validator import validate_jwt
 from more_sso.exceptions import AccessDeniedError, JWTValidationError
 from typing import TypeVar
 import json
-from more_sso.permissions import JSONPermission
+from more_sso.permissions import Permission
 
 RESPONSE_HEADERS = {
     "Content-Type": "application/json",
@@ -25,7 +25,7 @@ def json_response(status_code: int, detail: str="success", data: dict = {}):
     }
 
 
-def auth_required(permission_class=JSONPermission, permission: str = None, value=None):
+def auth_required(permission_class=Permission, permission: str = None, value=None):
     def decorator(func):
         @wraps(func)
         def wrapper(event: dict , *args, **kwargs):
@@ -38,8 +38,8 @@ def auth_required(permission_class=JSONPermission, permission: str = None, value
                 permission_obj = permission_class(claims, permission, value)
 
                 if not permission_obj.has_access():
-                    raise AccessDeniedError("Access denied: insufficient pervileges for this resource")
-                
+                    raise AccessDeniedError
+
                 return func(event, *args, **kwargs)
             except JWTValidationError as e:
                 return json_response( 401, detail= str(e) )
@@ -58,5 +58,6 @@ def root_auth_required(func):
             event['requestContext']['user'] = user
             return func(event, context)
         except JWTValidationError as e:
+            print(f"Unauthorized:{e}")
             return json_response( 401, detail=str(e))
     return wrapper
