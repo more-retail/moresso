@@ -58,6 +58,5 @@ def root_auth_required(func):
             event['requestContext']['user'] = user
             return func(event, context)
         except JWTValidationError as e:
-            print(f"Unauthorized:{e}")
             return json_response( 401, detail=str(e))
     return wrapper

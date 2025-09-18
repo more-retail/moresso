@@ -40,10 +40,10 @@ Usage
 The decoded JWT payload is automatically injected into the headers["user"].
 ```python
 from more_sso import auth_required
+
 @auth_required(permission="pma.role", value='admin')
 def my_func(event, *args, **kwargs):
     user = event.get("requestContext", {}).get("user")
-    print("User:", user)
     return {"ok": True}
 
 ```
@@ -54,7 +54,6 @@ from more_sso import validate_token
 from more_sso import JWTValidationError
 try:
     user = validate_token(token)
-    print(user)
 except JWTValidationError as e:
     print("Invalid token:", str(e))
 ```

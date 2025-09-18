@@ -20,7 +20,6 @@ def get_public_key() -> str:
 
 def validate_jwt(token: str) -> dict:
     public_key,audience = get_public_key()
-    print("Public Key:", public_key, "Audience:", audience)
     decode_fn = jwt.decode
     if audience:
          decode_fn = partial(jwt.decode,audience=audience)
