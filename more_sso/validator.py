@@ -34,7 +34,6 @@ def validate_jwt(token: str) -> dict:
         )
         return payload
     except Exception as e:
-        _public_key_cache.clear()
         raise JWTValidationError(f"JWT validation failed: {str(e)}")
 
 def validate_token(token) -> dict:
