@@ -53,4 +53,5 @@ def get_sso_config():
 
     _validate_config(config)
     _config = config
+    print("SSO Config Loaded:", _config,config)
     return config
