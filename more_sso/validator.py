@@ -28,15 +28,14 @@ def validate_jwt(token: str) -> dict:
             token = token.split("Bearer ")[1].strip()
         payload = decode_fn(
             token,
+            token_type='access',
             key=public_key,
             algorithms=["RS256"]
         )
         return payload
     except Exception as e:
-        _public_key_cache.clear()
         raise JWTValidationError(f"JWT validation failed: {str(e)}")
 
 def validate_token(token) -> dict:
-    cfg = get_sso_config()
     user = validate_jwt(token)
     return user

@@ -40,10 +40,10 @@ Usage
 The decoded JWT payload is automatically injected into the headers["user"].
 ```python
 from more_sso import auth_required
-@auth_required(permission="scopes.store_ids", value=1108)
+
+@auth_required(permission="pma.role", value='admin')
 def my_func(event, *args, **kwargs):
     user = event.get("requestContext", {}).get("user")
-    print("User:", user)
     return {"ok": True}
 
 ```
@@ -54,7 +54,6 @@ from more_sso import validate_token
 from more_sso import JWTValidationError
 try:
     user = validate_token(token)
-    print(user)
 except JWTValidationError as e:
     print("Invalid token:", str(e))
 ```
@@ -69,10 +68,10 @@ def lambda_handler(event, context):
     return {"statusCode": 200, "body": f"Hello {user['sub']}"}
 ```
 Permissions
-The default JSONPermissionChecker lets you enforce JSON-based policies (nested claims, lists, or flags).
+The default Permission lets you enforce JSON-based policies (nested claims, lists, or flags).
 Example:
 ```python
-@auth_required(permission="scopes.store_ids", value=1101)
+@auth_required(permission="my_app.role", value='admin')
 def handler(event, *args, **kwargs):
     user = event['requestContext'].get("user", {})
     ...
@@ -95,9 +94,18 @@ class CustomPermission(BasePermission):
 ```
 Use it in the decorator:
 ```python
+from more_sso import AccessDeniedError
+
 @auth_required(permission_class=CustomPermission)
 def admin_only(event, *args, **kwargs):
     return {"ok": "admin access granted"}
+
+def handler(event,context):
+    try :
+        admin_only()
+    except AccessDeniedError as e:
+        return {"statusCode": 403, "body": "access denied to this route"}
+
 ```
 Exception Handling
 ```python

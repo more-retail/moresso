@@ -11,7 +11,7 @@ class BasePermission:
         raise NotImplementedError
     
 
-class JSONPermission(BasePermission):
+class Permission(BasePermission):
     """
     Default permission checker for claims stored in nested JSON.
     """
