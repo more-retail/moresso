@@ -38,6 +38,5 @@ def validate_jwt(token: str) -> dict:
         raise JWTValidationError(f"JWT validation failed: {str(e)}")
 
 def validate_token(token) -> dict:
-    cfg = get_sso_config()
     user = validate_jwt(token)
     return user

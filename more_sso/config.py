@@ -52,4 +52,5 @@ def get_sso_config():
         config[key] = os.getenv(f"{key.upper()}", "")
 
     _validate_config(config)
+    _config = config
     return config
