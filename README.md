@@ -1,4 +1,4 @@
-# moresso — Lightweight SSO for Python
+# more-sso-auth — Lightweight SSO for Python
 
 A small, easy-to-use Single Sign-On (SSO) helper for Python apps and AWS Lambda.
 
@@ -18,7 +18,7 @@ A small, easy-to-use Single Sign-On (SSO) helper for Python apps and AWS Lambda.
 1. **Install**
 
 ```bash
-pip install moresso
+pip install more-sso-auth
 ```
 
 2. **Configure** (either method)
@@ -179,7 +179,7 @@ Note: Both `auth_required` and `root_auth_required` inject the decoded token con
 
 ## Security notes
 
-* Always validate `aud` (audience) and `exp` (expiry). `moresso` checks these by default when configured.
+* Always validate `aud` (audience) and `exp` (expiry). `more-sso-auth` checks these by default when configured.
 * Rotate keys at the Identity Provider (IdP) and ensure the IdP exposes the new public key at the configured `PUBLIC_KEY_URI`.
 
 ---
