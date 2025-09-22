@@ -95,9 +95,9 @@ There are two ways to enforce authorization with `auth_required`:
 
 1. **Simple claim check** — pass `permission` and `value`.
 
-   * `permission` is a dotted path into the decoded JWT payload (for example: `pma.role` will look up `user["pma"]["role"]`).
+   * `permission` is a dotted path into the decoded JWT payload (for example: `pma.role` will look up `user['permissions']["pma"]["role"]`).
    * `value` is the expected value.
-
+    * the `user` claims will also contain the `permissions` as a json with app specific roles and permisson attributes 
 ```python
 @auth_required(permission="my_app.role", value="admin")
 def handler(event, *args, **kwargs):
