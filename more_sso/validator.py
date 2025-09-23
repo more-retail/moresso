@@ -21,7 +21,7 @@ def get_public_key() -> str:
 def validate_jwt(token: str, options: dict = None) -> dict:
     public_key,audience = get_public_key()
     decode_fn = jwt.decode
-    if audience:
+    if audience and options.get("verify_aud", True):
          decode_fn = partial(jwt.decode,audience=audience)
     try:
         if token.startswith("Bearer "):
