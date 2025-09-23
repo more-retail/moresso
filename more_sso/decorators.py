@@ -25,7 +25,7 @@ def json_response(status_code: int, detail: str="success", data: dict = {}):
     }
 
 
-def auth_required(permission_class=Permission, permission: str = None, value=None):
+def auth_required(permission_class=Permission, permission: str = None, value=None,**kwargs):
     def decorator(func):
         @wraps(func)
         def wrapper(event: dict , *args, **kwargs):
@@ -35,7 +35,7 @@ def auth_required(permission_class=Permission, permission: str = None, value=Non
             try:
                 claims = validate_jwt(token)
                 event['requestContext']['user'] = claims
-                permission_obj = permission_class(claims, permission, value)
+                permission_obj = permission_class(claims, permission, value, **kwargs)
 
                 if not permission_obj.has_access():
                     raise AccessDeniedError

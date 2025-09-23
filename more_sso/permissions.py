@@ -2,10 +2,11 @@ class BasePermission:
     """
     Interface for any permission checker.
     """
-    def __init__(self, claims: dict, permission: str = None, value=None):
+    def __init__(self, claims: dict, permission: str = None, value=None, **kwargs):
         self.user = claims
         self.permission = permission
         self.value = value
+        self.extras = kwargs
 
     def has_access(self) -> bool:
         raise NotImplementedError

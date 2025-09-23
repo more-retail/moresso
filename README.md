@@ -29,16 +29,16 @@ pip install more-sso-auth
 from more_sso import init_sso_config
 
 init_sso_config(
-    public_key_uri="https://auth.more.in/public_key",
-    audience="my-service"
+    public_key_uri="<your-kms-id>",
+    audience="<your-app>"
 )
 ```
 
 **Environment variables**
 
 ```bash
-export PUBLIC_KEY_URI="https://auth.more.in/public_key"
-export AUDIENCE="my-service"
+export PUBLIC_KEY_URI="<your-kms-id>"
+export AUDIENCE="<your-app>"
 ```
 
 3. **Protect a function**
@@ -111,11 +111,24 @@ def handler(event, *args, **kwargs):
 from more_sso import BasePermission, auth_required, AccessDeniedError
 
 class CustomPermission(BasePermission):
-    def has_access(self) -> bool:
-        # example: allow only admins
-        return self.user.get("role") == "admin"
+    def __init__(self,*args,**kwargs):
+        super.__init__(*args,**kwargs)
+        self.extras = kwargs
 
-@auth_required(permission_class=CustomPermission)
+    def check_something(self )
+        if self.extras['id'] == self.user['permissions']['id']
+            return "something"
+        ...
+    # to be implemented
+    def has_access(self) -> bool:
+
+        # example: allow only admins
+        if self.check_something() =='something' 
+            return self.user['permissions'].get("role") == "admin"
+
+
+@auth_required(permission_class=CustomPermission,**kwargs)
+# kwargs are stored in self.extras of permission class which can be accessed in has_access 
 def admin_only(event, *args, **kwargs):
     return {"ok": "admin access granted"}
 
