@@ -18,7 +18,7 @@ def get_public_key() -> str:
     _public_key_cache.set('AUDIENCE', cfg.get('audience'))  
     return public_key,cfg.get('audience')
 
-def validate_jwt(token: str) -> dict:
+def validate_jwt(token: str, options: dict = None) -> dict:
     public_key,audience = get_public_key()
     decode_fn = jwt.decode
     if audience:
@@ -30,12 +30,13 @@ def validate_jwt(token: str) -> dict:
             token,
             token_type='access',
             key=public_key,
-            algorithms=["RS256"]
+            algorithms=["RS256"],
+            options=options
         )
         return payload
     except Exception as e:
         raise JWTValidationError(f"JWT validation failed: {str(e)}")
 
-def validate_token(token) -> dict:
-    user = validate_jwt(token)
+def validate_token(token, options=None) -> dict:
+    user = validate_jwt(token, options)
     return user
