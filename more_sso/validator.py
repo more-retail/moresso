@@ -18,7 +18,7 @@ def get_public_key() -> str:
     _public_key_cache.set('AUDIENCE', cfg.get('audience'))  
     return public_key,cfg.get('audience')
 
-def validate_jwt(token: str, options: dict = None) -> dict:
+def validate_jwt(token: str, options: dict = {}) -> dict:
     public_key,audience = get_public_key()
     decode_fn = jwt.decode
     if audience and options.get("verify_aud", True):
@@ -37,6 +37,6 @@ def validate_jwt(token: str, options: dict = None) -> dict:
     except Exception as e:
         raise JWTValidationError(f"JWT validation failed: {str(e)}")
 
-def validate_token(token, options=None) -> dict:
+def validate_token(token, options:dict={}) -> dict:
     user = validate_jwt(token, options)
     return user
