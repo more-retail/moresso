@@ -19,6 +19,8 @@ A small, easy-to-use Single Sign-On (SSO) helper for Python apps and AWS Lambda.
 
 ```bash
 pip install more-sso-auth
+pip install PyJWT
+pip install cryptography
 ```
 
 2. **Configure** (either method)

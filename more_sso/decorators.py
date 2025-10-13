@@ -55,6 +55,8 @@ def root_auth_required(func):
             return json_response( 401, detail= "Unauthorized: Missing or invalid Authorization header")
         try:
             user = validate_jwt(token)
+            if not "requestContext" in event:
+                event['requestContext'] = {}
             event['requestContext']['user'] = user
             return func(event, context)
         except JWTValidationError as e:
