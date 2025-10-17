@@ -4,6 +4,7 @@ import jwt
 from more_sso.cache import Cache
 from more_sso.config import get_sso_config,get_pem
 from more_sso.exceptions import JWTValidationError
+from jwt import InvalidAlgorithmError
 from functools import partial
 _public_key_cache = Cache(ttl_seconds=60*60)
 
@@ -34,6 +35,8 @@ def validate_jwt(token: str, options: dict = {}) -> dict:
             options=options
         )
         return payload
+    except InvalidAlgorithmError as e:
+        raise JWTValidationError(f"JWT validation failed: invalid token ")
     except Exception as e:
         raise JWTValidationError(f"JWT validation failed: {str(e)}")
 
