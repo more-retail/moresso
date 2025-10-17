@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: moresso
+name: more-sso-auth
 
 on:
   release:
@@ -55,7 +55,7 @@ jobs:
       #
       # ALTERNATIVE: if your GitHub Release name is the PyPI project version string
       # ALTERNATIVE: exactly, uncomment the following line instead:
-      url: https://pypi.org/p/moresso/${{ github.event.release.name }}
+      url: https://pypi.org/p/more-sso-auth/${{ github.event.release.name }}
       #
       # ALTERNATIVE: if your GitHub Release name is the PyPI project version string
       # ALTERNATIVE: exactly, uncomment the following line instead:
