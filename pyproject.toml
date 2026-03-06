@@ -1,6 +1,6 @@
 [project]
 name = "more-sso-auth"
-version = "1.4.2"
+version = "1.5.0"
 description = "A lightweight and extensible Single Sign-On (SSO) authentication library for Python."
 readme = "README.md"
 authors = [
@@ -10,7 +10,8 @@ license = { text = "MIT" }
 requires-python = ">=3.8"
 
 dependencies = [
-    "cryptography==46.0.3"
+    "cryptography==46.0.3",
+    "redis>=6.1.1",
 ]
 
 [build-system]
@@ -20,3 +21,11 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["more_sso"]
+
+[tool.uv.sources]
+more-sso-auth = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "more-sso-auth",
+]

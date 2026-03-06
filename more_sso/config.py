@@ -2,12 +2,13 @@ import json
 import os
 import boto3
 import base64
+from redis import RedisCluster
 class ConfigMissingError(Exception):
     """Raised when required SSO config is missing."""
     pass
 
 REQUIRED_SSO_KEYS = ["public_key_uri"]
-ADDITIONAL_KEYS = ["audience"]
+ADDITIONAL_KEYS = ["audience",'redis_url','redis_password']
 
 def get_pem(KeyId) -> str:
     kms = boto3.client("kms",'ap-south-1')
@@ -24,7 +25,7 @@ def _validate_config(config: dict):
     if missing:
         raise ConfigMissingError(f"Missing SSO config: {', '.join(missing)} \n please set them in environment or pass them as parameters to init_sso_config( ) ")
 
-def init_sso_config(public_key_uri=None,audience=None):
+def init_sso_config(public_key_uri=None,audience=None,REDIS_URL=None,REDIS_PASSWORD=None):
     """
     Initialize config from parameters or environment variables.
     Supports any keys. Required keys are checked dynamically.
@@ -34,6 +35,8 @@ def init_sso_config(public_key_uri=None,audience=None):
         "public_key_uri": public_key_uri,
         "audience": audience
     }
+    if REDIS_URL :
+        _config['REDIS'] = RedisCluster(host=REDIS_URL, decode_responses=True,password=REDIS_PASSWORD, ssl=True, ssl_cert_reqs=False, skip_full_coverage_check=True)
     _validate_config(_config)
 
 
@@ -52,5 +55,8 @@ def get_sso_config():
         config[key] = os.getenv(f"{key.upper()}", "")
 
     _validate_config(config)
+    if config.get("REDIS_URL"):
+        config['REDIS'] = RedisCluster(host=config.get("REDIS_URL"), decode_responses=True,password=config.get("REDIS_PASSWORD"), ssl=True, ssl_cert_reqs=False, skip_full_coverage_check=True)
+
     _config = config
     return config
